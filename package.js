@@ -23,5 +23,6 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
 	api.use('kenken:meteor-counters');
 	api.use(['tinytest', 'test-helpers']);
-	api.addFiles('tests/counters-tests.js');
+
+	api.addFiles('tests/counters-tests.js', ['server', 'client']);
 });
