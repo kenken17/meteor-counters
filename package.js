@@ -1,7 +1,7 @@
 Package.describe({
 	name: 'kenken:meteor-counters',
 	summary: 'A simple counter collection to keep number sequencing.',
-	version: '1.0.1',
+	version: '1.1.0',
 	git: 'https://github.com/kenken17/meteor-counters'
 });
 
@@ -9,8 +9,6 @@ Package.onUse(function(api) {
 	api.versionsFrom('1.0');
 
 	// Meteor dependencies
-	api.use('ui');
-	api.use('templating');
 	api.use('mongo');
 	api.use('underscore');
 
@@ -23,7 +21,8 @@ Package.onUse(function(api) {
 });
 
 Package.onTest(function(api) {
-	api.use('tinytest');
 	api.use('kenken:meteor-counters');
-	api.addFiles('tests/counters-tests.js');
+	api.use(['tinytest', 'test-helpers']);
+
+	api.addFiles('tests/counters-tests.js', ['server', 'client']);
 });
