@@ -21,8 +21,8 @@ Package.onUse(function(api) {
 });
 
 Package.onTest(function(api) {
+	api.use(['mike:mocha-package@0.5.6', "practicalmeteor:chai"]);
 	api.use('kenken:meteor-counters');
-	api.use(['tinytest', 'test-helpers']);
 
 	api.addFiles('tests/counters-tests.js', ['server', 'client']);
 });

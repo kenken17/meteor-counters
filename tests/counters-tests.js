@@ -1,12 +1,4 @@
-Tinytest.add('MCounters Exports', function(test) {
-	test.isNotUndefined(MCounters, 'MCounters is exported.');
-});
-
-Tinytest.add('getNextSequence', function(test) {
-
-	Meteor.Counters.remove({});
-
-	// setup
+describe('MCounters', function() {
 	Meteor.Counters.allow({
 		insert: function() {
 			console.log('-------------------insert-------------------');
@@ -24,19 +16,43 @@ Tinytest.add('getNextSequence', function(test) {
 		}
 	});
 
-	// 1.
-	test.equal('function', typeof MCounters.getNextSequence, 'MCounters.getNextSequence is a function.');
+	// setup
+	before(function(done) {
+		if (Meteor.isServer) {
+			Meteor.Counters.remove({});
+		}
 
-	var seq = MCounters.getNextSequence('myCollection');
-
-	// 2.
-	test.equal(seq, 1, 'First call should get 1.');
-
-	seq = MCounters.getNextSequence('myCollection');
-
-	// 3.
-	test.equal(seq, 2, 'Second call should get 2.');
+		done();
+	});
 
 	// Tear down
-	Meteor.Counters.remove({});
+	after(function(done) {
+		if (Meteor.isServer) {
+			Meteor.Counters.remove({});
+		}
+
+		done();
+	});
+
+	it('should export the MCounter module.', function(done) {
+		expect(MCounters.getNextSequence).to.be.a('function');
+
+		done();
+	});
+
+	it('should get the seq no. 1 when first call', function(done) {
+		var seq = MCounters.getNextSequence('myCollection');
+
+		expect(seq).equal(1);
+
+		done();
+	});
+
+	it('should get the seq no. 2 when second call', function(done) {
+		var seq = MCounters.getNextSequence('myCollection');
+
+		expect(seq).equal(2);
+
+		done();
+	});
 });
