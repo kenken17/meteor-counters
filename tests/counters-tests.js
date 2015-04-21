@@ -1,58 +1,72 @@
 describe('MCounters', function() {
-	Meteor.Counters.allow({
-		insert: function() {
-			console.log('-------------------insert-------------------');
-			return true;
-		},
-
-		update: function() {
-			console.log('-------------------update-------------------');
-			return true;
-		},
-
-		remove: function() {
-			console.log('-------------------remove-------------------');
-			return true;
-		}
-	});
-
-	// setup
-	before(function(done) {
-		if (Meteor.isServer) {
-			Meteor.Counters.remove({});
-		}
-
-		done();
-	});
-
-	// Tear down
-	after(function(done) {
-		if (Meteor.isServer) {
-			Meteor.Counters.remove({});
-		}
-
-		done();
-	});
-
-	it('should export the MCounter module.', function(done) {
+	it('should export the MCounter module.', function() {
 		expect(MCounters.getNextSequence).to.be.a('function');
-
-		done();
 	});
 
-	it('should get the seq no. 1 when first call', function(done) {
-		var seq = MCounters.getNextSequence('myCollection');
+	describe('getNextSequence - Client', function() {
+		if (Meteor.isClient) {
+			it('should get the seq no. 1 when first call', function(done) {
+				Meteor.apply('MCounters.methodGetNextSequence', ['myCollection'], function(err, result) {
+					expect(result).equal(1);
 
-		expect(seq).equal(1);
+					done();
+				});
+			});
 
-		done();
+			it('should get the seq no. 2 when second call', function(done) {
+				Meteor.apply('MCounters.methodGetNextSequence', ['myCollection'], function(err, result) {
+					expect(result).equal(2);
+
+					done();
+				});
+			});
+		}
 	});
 
-	it('should get the seq no. 2 when second call', function(done) {
-		var seq = MCounters.getNextSequence('myCollection');
+	describe('getNextSequence - Server', function() {
+		if (Meteor.isServer) {
+			it('should get the seq no. 1 when first call', function(done) {
+				var seq = Meteor.call('MCounters.methodGetNextSequence', 'myCollection');
 
-		expect(seq).equal(2);
+				expect(seq).equal(1);
 
-		done();
+				done();
+			});
+
+			it('should get the seq no. 2 when second call', function(done) {
+				var seq = Meteor.call('MCounters.methodGetNextSequence', 'myCollection');
+
+				expect(seq).equal(2);
+
+				done();
+			});
+
+			// tear down
+			Meteor.Counters.remove({});
+		}
+	});
+
+	describe('setSequence - Client', function() {
+		if (Meteor.isClient) {
+			it('should set the seq no. 100 and get back 100', function(done) {
+				Meteor.apply('MCounters.methodSetSequence', ['myCollection', 100], function(err, result) {
+					expect(result).equal(100);
+
+					done();
+				});
+			});
+		}
+	});
+
+	describe('setSequence - Server', function() {
+		if (Meteor.isServer) {
+			it('should set the seq no. 100 and get back 100', function(done) {
+				var seq = Meteor.call('MCounters.methodSetSequence', 'myCollection', 100);
+
+				expect(seq).equal(100);
+
+				done();
+			});
+		}
 	});
 });
