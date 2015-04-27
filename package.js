@@ -1,7 +1,7 @@
 Package.describe({
 	name: 'kenken:meteor-counters',
 	summary: 'A simple counter collection to keep number sequencing.',
-	version: '1.1.3',
+	version: '1.1.4',
 	git: 'https://github.com/kenken17/meteor-counters'
 });
 
