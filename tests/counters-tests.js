@@ -1,5 +1,9 @@
 describe('MCounters', function() {
 	it('should export the MCounter module.', function() {
+		expect(MCounters).to.be.an('object');
+	});
+
+	it('show getNextSequence is a function', function() {
 		expect(MCounters.getNextSequence).to.be.a('function');
 	});
 
@@ -44,6 +48,10 @@ describe('MCounters', function() {
 			// tear down
 			Meteor.Counters.remove({});
 		}
+	});
+
+	it('show setSequence is a function', function() {
+		expect(MCounters.setSequence).to.be.a('function');
 	});
 
 	describe('setSequence - Client', function() {
