@@ -15,15 +15,27 @@
 					collection: collection,
 					seq: 1
 				});
+
+				return 1;
 			} else {
+				// get the current seq
+				var currentSeq = Meteor.Counters.findOne({collection: collection}).seq;
+
 				Meteor.Counters.update({
 					collection: collection
 				}, {
 					$inc: {seq: 1}
 				});
-			}
 
-			return Meteor.Counters.findOne({collection: collection}).seq;
+				// check the seq is indeed increase by one?
+				var newSeq = Meteor.Counters.findOne({collection: collection}).seq;
+
+				if (newSeq === currentSeq+1) {
+					return newSeq;
+				} else {
+					throw Meteor.Error('Sequence not match');
+				}
+			}
 		},
 
 		"MCounters.methodSetSequence": function(collection, seq) {
