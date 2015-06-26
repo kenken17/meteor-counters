@@ -17,7 +17,7 @@ MCounters.getNextSequence = function(collection) {
 		return 1;
 	} else {
 		// get the current seq
-		var currentSeq = Meteor.Counters.findOne({collection: collection}).seq;
+		var currentSeq = counter.seq;
 
 		Meteor.Counters.update({
 			collection: collection
@@ -46,4 +46,16 @@ MCounters.setSequence = function(collection, seq) {
 	});
 
 	return Meteor.Counters.findOne({collection: collection}).seq;
+};
+
+MCounters.checkNextSequence = function(collection) {
+	// if collection doesn't exist, create the first sequence with 1 and return it
+	var counter = Meteor.Counters.findOne({collection: collection});
+
+	if (!counter) {
+		return 1;
+	} else {
+		// return current sequence + 1
+		return counter.seq + 1;
+	}
 };
