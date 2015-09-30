@@ -67,9 +67,39 @@ describe('MCounters', function() {
 				// set the sequence to 100
 				MCounters.setSequence('myCollection2', 100);
 
-				var seq = MCounters.getNextSequence('myCollection2');
+				var seq = MCounters.checkNextSequence('myCollection2');
 
 				expect(seq).equal(101);
+
+				done();
+			});
+
+			// tear down
+			Meteor.Counters.remove({});
+		}
+	});
+
+	it('show checkCurrentSequence is a function', function() {
+		expect(MCounters.checkCurrentSequence).to.be.a('function');
+	});
+
+	describe('checkCurrentSequence', function() {
+		if (Meteor.isServer) {
+			it('should return the seq no. 0 when first call', function(done) {
+				var seq = MCounters.checkCurrentSequence('myCollection3');
+
+				expect(seq).equal(0);
+
+				done();
+			});
+
+			it('should return the seq no. 100 when collection has already setup and with 100 in it', function(done) {
+				// set the sequence to 100
+				MCounters.setSequence('myCollection3', 100);
+
+				var seq = MCounters.checkCurrentSequence('myCollection3');
+
+				expect(seq).equal(100);
 
 				done();
 			});

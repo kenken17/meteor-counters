@@ -31,6 +31,7 @@ The `setSequence()` will take in a collection name (a string), and one integer s
 ```javascript
 MCounters.setSequence('myCollection', 100);	// will return 100
 ```
+
 ####checkNextSequence(collection)
 Similar to `getNextSequence()`, `checkNextSequence()` will take in a collection name (a string), and return the `next` sequence but will not set the counter.
 
@@ -41,4 +42,16 @@ MCounters.checkNextSequence('myCollection');	// will return 1, since no previous
 
 MCounters.setNextSequence('myCollection', 100);	// set the counter to 100
 MCounters.checkNextSequence('myCollection');	// will return 101
+```
+
+####checkCurrentSequence(collection)
+Similar to `checkNextSequence()`, `checkCurrentSequence()` will take in a collection name (a string), and return the `current` sequence but will not set the counter. `0` will return if no collection found.
+
+*Examples:*
+
+```javascript
+MCounters.checkCurrentSequence('myCollection');	// will return 0, since no previous counter named 'myCollection'
+
+MCounters.setNextSequence('myCollection', 100);	// set the counter to 100
+MCounters.checkCurrentSequence('myCollection');	// will return 100
 ```
