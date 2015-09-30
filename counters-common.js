@@ -59,3 +59,15 @@ MCounters.checkNextSequence = function(collection) {
 		return counter.seq + 1;
 	}
 };
+
+MCounters.checkCurrentSequence = function(collection) {
+	// if collection doesn't exist, create the first sequence with 0 and return it
+	var counter = Meteor.Counters.findOne({collection: collection});
+
+	if (!counter) {
+		return 0;
+	} else {
+		// return current sequence
+		return counter.seq;
+	}
+};
